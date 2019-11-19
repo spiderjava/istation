@@ -22,7 +22,7 @@ const pool = new Pool({
 app.get('/InIStationProbe', async (req, res) => {
   try {
     const client = await pool.connect()
-    const result = await client.query('SELECT wifidata_id FROM wifidata');
+    const result = await client.query('SELECT * FROM wifidata');
     res.render('pages/db', result);
     client.release();
   } catch (err) {
