@@ -89,10 +89,10 @@ app.get('/api/v1/InIStationProbe', async (req, res) => {
 app.get('/api/v1/InIStationProbe/count', async (req, res) => {
   try {
     const client = await pool.connect()
-    const result = await client.query('SELECT * FROM wifidata ORDER BY store_time DESC LIMIT 100');
+    const result = await client.query('SELECT count(*) FROM wifidata');
     return res.status(201).send({
       success: 'true',
-      message: 'Total record in wifidata table:' + result.rows
+      message: 'Total record in wifidata table:' + result.rows[0].count
     });
   } catch (err) {
     console.error(err);
