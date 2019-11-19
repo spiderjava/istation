@@ -1,5 +1,8 @@
+var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -22,7 +25,31 @@ const pool = new Pool({
   ssl: true
 });
 
-app.get('/v1/InIStationProbe', async (req, res) => {
+
+app.post('/api/v1/InIStationProbe', (req, res) => {
+  if(!req.body.station_id) {
+    return res.status(400).send({
+      success: 'false',
+      message: 'station_id is required'
+    });
+  } else if(!req.body.send_time) {
+    return res.status(400).send({
+      success: 'false',
+      message: 'send_time is required'
+    });
+  }
+ 
+
+ return res.status(201).send({
+   success: 'true',
+   message: 'New wifidata message stored in IStation',
+   todo
+ });
+});
+
+
+
+app.get('/api/v1/InIStationProbe', async (req, res) => {
   try {
     const client = await pool.connect()
     const result = await client.query('SELECT * FROM wifidata');
