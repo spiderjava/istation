@@ -11,11 +11,48 @@
 <div class="container">
 <h2>Database Results</h2>
 
-<ul>
+<table width="100%">
+  <tr>
+    <th>wifidata_id</th>
+    <th>station_id</th>
+    <th>station_name</th>
+    <th>latitude</th>
+    <th>longitude</th>
+    <th>mac_address</th>
+    <th>floor</th>
+    <th>zone_id</th>
+    <th>zone_name</th>
+    <th>gender</th>
+    <th>age</th>
+    <th>phone_prefix</th>
+    <th>social</th>
+    <th>registration_date</th>
+    <th>connection_time</th>
+    <th>send_time</th>
+    <th>store_time</th>
+  </tr>
   <% rows.forEach(function(r) { %>
-      <li><%= r.wifidata_id %> - <%= r.store_time %></li>
-  <% }); %>
-</ul>
+    <tr>
+      <td><%= r.wifidata_id %></td>
+      <td><%= r.station_id %></td>
+      <td><%= r.station_name %></td>
+      <td><%= r.latitude %></td>
+      <td><%= r.longitude %></td>
+      <td><%= r.mac_address %></td>
+      <td><%= r.floor %></td>
+      <td><%= r.zone_id %></td>
+      <td><%= r.zone_name %></td>
+      <td><%= r.gender %></td>
+      <td><%= r.age %></td>
+      <td><%= r.phone_prefix %></td>
+      <td><%= r.social %></td>
+      <td><%= r.registration_date %></td>
+      <td><%= r.connection_time %></td>
+      <td><%= r.send_time %></td>
+      <td><%= r.store_time %></td>
+    </tr>
+    <% }); %>
+</table>
 
 </div>
 
