@@ -28,26 +28,52 @@ const pool = new Pool({
 
 app.post('/api/v1/InIStationProbe', (req, res) => {
   console.info(req.body);
-  let istationarray= req.body
-  if(!istationarray[0].station_id) {
-    return res.status(400).send({
-      success: 'false',
-      message: 'station_id is required'
-    });
-  } else if(!istationarray[0].send_time) {
-    return res.status(400).send({
-      success: 'false',
-      message: 'send_time is required'
-    });
-  }
+  let istationarray= req.body;
+  for(let i = 0; i < istationarray.length;i++){
 
-// Store WIFI_DATA
+    // INSERT VALIDATION RULES
+    if(!istationarray[i].station_id) {
+      return res.status(400).send({
+        success: 'false',
+        message: 'station_id is required'
+      });
+    } else if(!istationarray[i].send_time) {
+      return res.status(400).send({
+        success: 'false',
+        message: 'send_time is required'
+      });
+      // INSERT END VALIDATION RULES
+    }
+      try {
+        const client = await pool.connect();
 
+        try {
+          await client.query('BEGIN');
+          const queryText = 'INSERT INTO wifidata(station_id,station_name,connection_time,send_time,latitude,longitude,mac_address,floor,zone_id,zone_name,gender,age,phone_prefix,social,registration_date)' 
+          + 'VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING wifidata_id';
+          const dbres = await client.query(queryText, [istationarray[i].station_id,istationarray[i].station_name,istationarray[i].connection_time,istationarray[i].send_time,istationarray[i].latitude,istationarray[i].longitude,istationarray[i].mac_address,istationarray[i].floor,istationarray[i].zone_id,istationarray[i].zone_name,istationarray[i].gender,istationarray[i].age,istationarray[i].phone_prefix,istationarray[i].social,istationarray[i].registration_date]);
+          await client.query('COMMIT');
+        } catch (e) {
+          await client.query('ROLLBACK');
+          throw e;
+        } finally {
+          client.release();
+        }
+      } catch (err) {
+        console.error(err);
+        return res.status(400).send({
+          success: 'false',
+          message: err
+        });
+      }
+    }
 
- return res.status(201).send({
-   success: 'true',
-   message: 'New wifidata message stored in IStation'
- });
+  return res.status(201).send({
+    success: 'true',
+    message: 'New wifidata message stored in IStation'
+  });
+  
+ 
 });
 
 
