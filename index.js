@@ -10,7 +10,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
-  res.status(200).send({
+  response.status(200).send({
     success: 'true',
     message: 'IStation API Services Running'
   });
