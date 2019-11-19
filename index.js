@@ -84,7 +84,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
 app.get('/api/v1/InIStationProbe', async (req, res) => {
   try {
     const client = await pool.connect()
-    const result = await client.query('SELECT * FROM wifidata');
+    const result = await client.query('SELECT * FROM wifidata ORDER BY store_time DESC, LIMIT 3');
     res.render('pages/db', result);
     client.release();
   } catch (err) {
