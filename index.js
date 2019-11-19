@@ -10,7 +10,10 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
-  response.render('pages/index')
+  res.status(200).send({
+    success: 'true',
+    message: 'IStation API Services Running'
+  });
 });
 
 const { Pool } = require('pg');
