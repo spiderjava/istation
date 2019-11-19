@@ -27,6 +27,7 @@ const pool = new Pool({
 
 
 app.post('/api/v1/InIStationProbe', (req, res) => {
+  console.info(req.body);
   if(!req.body.station_id) {
     return res.status(400).send({
       success: 'false',
@@ -38,7 +39,6 @@ app.post('/api/v1/InIStationProbe', (req, res) => {
       message: 'send_time is required'
     });
   }
- 
 
  return res.status(201).send({
    success: 'true',
