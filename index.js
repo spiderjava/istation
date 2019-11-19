@@ -96,7 +96,7 @@ app.get('/api/v1/InIStationProbe', async (req, res) => {
 app.delete('/api/v1/InIStationProbe', async (req, res) => {
   try {
     const client = await pool.connect()
-    const result = await client.query('DELETE * FROM wifidata');
+    const result = await client.query('DELETE FROM wifidata');
     res.render('pages/db', result);
     client.release();
   } catch (err) {
