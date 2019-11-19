@@ -92,7 +92,7 @@ app.get('/api/v1/InIStationProbe/count', async (req, res) => {
     const result = await client.query('SELECT count(*) FROM wifidata');
     return res.status(201).send({
       success: 'true',
-      message: 'Total record in wifidata table:' + result.rows[0].count
+      message: 'Total record in wifidata table: ' + result.rows[0].count
     });
   } catch (err) {
     console.error(err);
