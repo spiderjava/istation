@@ -27,7 +27,7 @@ const pool = new Pool({
 
 
 app.post('/api/v1/InIStationProbe', async(req, res) => {
-  console.info(req.body);
+  //console.info(req.body);
   let istationarray= req.body;
   const client = await pool.connect();
   try {
@@ -35,15 +35,9 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
 
           // INSERT VALIDATION RULES
           if(!istationarray[i].station_id) {
-            return res.status(400).send({
-              success: 'false',
-              message: 'station_id is required'
-            });
+            throw new Error('station_id is required');
           } else if(!istationarray[i].send_time) {
-            return res.status(400).send({
-              success: 'false',
-              message: 'send_time is required'
-            });
+            throw new Error('send_time is required');
           }
           // INSERT END VALIDATION RULES
       
@@ -84,7 +78,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
 app.get('/api/v1/InIStationProbe', async (req, res) => {
   try {
     const client = await pool.connect()
-    const result = await client.query('SELECT * FROM wifidata ORDER BY store_time DESC LIMIT 3');
+    const result = await client.query('SELECT * FROM wifidata ORDER BY store_time DESC LIMIT 100');
     res.render('pages/db', result);
     client.release();
   } catch (err) {
