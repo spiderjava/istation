@@ -28,17 +28,21 @@ const pool = new Pool({
 
 app.post('/api/v1/InIStationProbe', (req, res) => {
   console.info(req.body);
-  if(!req.body.station_id) {
+  let istationarray= req.body
+  if(!istationarray[0].station_id) {
     return res.status(400).send({
       success: 'false',
       message: 'station_id is required'
     });
-  } else if(!req.body.send_time) {
+  } else if(!istationarray[0].send_time) {
     return res.status(400).send({
       success: 'false',
       message: 'send_time is required'
     });
   }
+
+// Store WIFI_DATA
+
 
  return res.status(201).send({
    success: 'true',
