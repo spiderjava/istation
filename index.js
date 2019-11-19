@@ -42,8 +42,7 @@ app.post('/api/v1/InIStationProbe', (req, res) => {
 
  return res.status(201).send({
    success: 'true',
-   message: 'New wifidata message stored in IStation',
-   todo
+   message: 'New wifidata message stored in IStation'
  });
 });
 
