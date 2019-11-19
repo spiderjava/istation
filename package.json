@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "istation",
+  "version": "0.0.1",
+  "description": "RFI IStation Heroku Application",
   "engines": {
     "node": "12.x"
   },
