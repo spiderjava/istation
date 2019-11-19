@@ -29,9 +29,8 @@ const pool = new Pool({
 app.post('/api/v1/InIStationProbe', async(req, res) => {
   console.info(req.body);
   let istationarray= req.body;
-
+  const client = await pool.connect();
   try {
-      const client = await pool.connect();
       for(let i = 0; i < istationarray.length;i++){
 
           // INSERT VALIDATION RULES
