@@ -26,7 +26,7 @@ const pool = new Pool({
 });
 
 
-app.post('/api/v1/InIStationProbe', (req, res) => {
+app.post('/api/v1/InIStationProbe', async(req, res) => {
   console.info(req.body);
   let istationarray= req.body;
   for(let i = 0; i < istationarray.length;i++){
