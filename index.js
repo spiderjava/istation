@@ -59,7 +59,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
               
         return res.status(400).send({
           success: 'false',
-          message: err
+          message: err.message
         });
       } finally {
         client.release();
