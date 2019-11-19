@@ -22,7 +22,7 @@ const pool = new Pool({
   ssl: true
 });
 
-app.get('/InIStationProbe', async (req, res) => {
+app.get('/v1/InIStationProbe', async (req, res) => {
   try {
     const client = await pool.connect()
     const result = await client.query('SELECT * FROM wifidata');
