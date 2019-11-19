@@ -86,6 +86,23 @@ app.get('/api/v1/InIStationProbe', async (req, res) => {
   }
 });
 
+app.get('/api/v1/InIStationProbe/count', async (req, res) => {
+  try {
+    const client = await pool.connect()
+    const result = await client.query('SELECT * FROM wifidata ORDER BY store_time DESC LIMIT 100');
+    return res.status(201).send({
+      success: 'true',
+      message: 'Total record in wifidata table:' + result.count
+    });
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }finally{
+    client.release();
+  }
+});
+
+
 app.delete('/api/v1/InIStationProbe', async (req, res) => {
   const client = await pool.connect()
   try {
