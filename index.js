@@ -107,8 +107,9 @@ app.get('/api/v1/InIStationProbe', async (req, res) => {
 });
 
 app.get('/api/v1/InIStationProbe/count', async (req, res) => {
+  let client = null;
   try {
-    const client = await pool.connect()
+    client = await pool.connect()
     const result = await client.query('SELECT count(*) FROM wifidata');
     return res.status(201).send({
       success: 'true',
@@ -118,7 +119,9 @@ app.get('/api/v1/InIStationProbe/count', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   }finally{
-    client.release(true);
+    if(client != null){
+      client.release(true);
+    }
   }
 });
 
