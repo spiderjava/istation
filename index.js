@@ -43,7 +43,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
           try {
             client = await pool.connect()
             //console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
-          
+            await client.query('BEGIN');
               for(let i = 0; i < istationarray.length;i++){
 
                   // INSERT VALIDATION RULES
@@ -52,11 +52,9 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
                   } else if(!istationarray[i].send_time) {
                     throw new Error('send_time is required');
                   }
-                  // INSERT END VALIDATION RULES
-              
 
                   try {
-                    await client.query('BEGIN');
+                    //await client.query('BEGIN');
                     const queryText = 'INSERT INTO wifidata(station_id,station_name,connection_time,send_time,latitude,longitude,mac_address,floor,zone_id,zone_name,gender,age,phone_prefix,social,registration_date)' 
                     + 'VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING wifidata_id';
                     const dbres = await client.query(queryText, [istationarray[i].station_id,istationarray[i].station_name,istationarray[i].connection_time,istationarray[i].send_time,istationarray[i].latitude,istationarray[i].longitude,istationarray[i].mac_address,istationarray[i].floor,istationarray[i].zone_id,istationarray[i].zone_name,istationarray[i].gender,istationarray[i].age,istationarray[i].phone_prefix,istationarray[i].social,istationarray[i].registration_date]);
