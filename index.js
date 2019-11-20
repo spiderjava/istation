@@ -38,8 +38,9 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
   console.info(req.body);
   try{     
           let istationarray= req.body;
+          let client = null;
           try {
-              const client = await pool.connect();
+            client = await pool.connect()
               consolo.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
           
               for(let i = 0; i < istationarray.length;i++){
@@ -73,7 +74,9 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
                   message: err.message
                 });
               } finally {
-                client.release(true);
+                if(client != null){
+                  client.release(true);
+                }
                 consolo.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
               } 
 
@@ -93,8 +96,9 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
 
 
 app.get('/api/v1/InIStationProbe', async (req, res) => {
+  let client = null;
   try {
-    const client = await pool.connect()
+    client = await pool.connect()
     const result = await client.query('SELECT * FROM wifidata ORDER BY store_time DESC LIMIT 100');
     res.render('pages/db', result);
     client.release();
@@ -102,7 +106,9 @@ app.get('/api/v1/InIStationProbe', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   }finally{
-    client.release(true);
+    if(client != null){
+      client.release(true);
+    }
   }
 });
 
@@ -127,14 +133,17 @@ app.get('/api/v1/InIStationProbe/count', async (req, res) => {
 
 
 app.delete('/api/v1/InIStationProbe', async (req, res) => {
-  const client = await pool.connect()
+  let client = null;
   try {
+    client = await pool.connect()
     const result = await client.query('DELETE FROM wifidata');
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
   } finally{
-    client.release(true);
+    if(client != null){
+      client.release(true);
+    }
   }
   return res.status(201).send({
     success: 'true',
