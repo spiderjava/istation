@@ -36,7 +36,7 @@ app.get('/', function(request, response) {
 /* INSERT NEW RECORD INTO DATABASE*/
 /* ############################## */
 app.post('/api/v1/InIStationProbe', async(req, res) => {
-  console.info(req.body);
+  //console.info(req.body);
   try{     
           let istationarray= req.body;
           let client = null;
