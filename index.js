@@ -8,7 +8,7 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   max: process.env.PG_MAX_CLIENT,
   idleTimeoutMillis: process.env.PG_IDLETIMEOUT_MILLIS,
-  connectionTimeoutMillis: process.env.PG_CONNECTIONTIMEOUT_MILLIS,
+  connectionTimeoutMillis: process.env.PG_CONNECTIONTIMEOUT_MILLIS
 });
 
 app.use(bodyParser.json());
