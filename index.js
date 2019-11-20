@@ -42,7 +42,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
           let client = null;
           try {
             client = await pool.connect()
-              console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
+            //console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
           
               for(let i = 0; i < istationarray.length;i++){
 
@@ -78,7 +78,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
                 if(client != null){
                   client.release(true);
                 }
-                console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
+                //console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
               } 
 
           return res.status(201).send({
@@ -122,6 +122,7 @@ app.get('/api/v1/InIStationProbe/count', async (req, res) => {
   let client = null;
   try {
     client = await pool.connect()
+    console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
     const result = await client.query('SELECT count(*) FROM wifidata');
     return res.status(201).send({
       success: 'true',
@@ -134,6 +135,7 @@ app.get('/api/v1/InIStationProbe/count', async (req, res) => {
     if(client != null){
       client.release(true);
     }
+    console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
   }
 });
 
