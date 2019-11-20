@@ -33,7 +33,8 @@ app.get('/', function(request, response) {
 
 
 
-
+/* INSERT NEW RECORD INTO DATABASE*/
+/* ############################## */
 app.post('/api/v1/InIStationProbe', async(req, res) => {
   console.info(req.body);
   try{     
@@ -41,7 +42,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
           let client = null;
           try {
             client = await pool.connect()
-              consolo.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
+              console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
           
               for(let i = 0; i < istationarray.length;i++){
 
@@ -77,7 +78,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
                 if(client != null){
                   client.release(true);
                 }
-                consolo.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
+                console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
               } 
 
           return res.status(201).send({
@@ -95,6 +96,8 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
 
 
 
+/* GET LIST OF LAST 100 RECORD */
+/* ########################### */
 app.get('/api/v1/InIStationProbe', async (req, res) => {
   let client = null;
   try {
@@ -112,6 +115,9 @@ app.get('/api/v1/InIStationProbe', async (req, res) => {
   }
 });
 
+
+/* COUNT THE TOTAL RECORDS IN DB */
+/* ############################# */
 app.get('/api/v1/InIStationProbe/count', async (req, res) => {
   let client = null;
   try {
@@ -132,6 +138,9 @@ app.get('/api/v1/InIStationProbe/count', async (req, res) => {
 });
 
 
+
+/* DELETE ALL RECORDS INTO THE DB */
+/* ############################## */
 app.delete('/api/v1/InIStationProbe', async (req, res) => {
   let client = null;
   try {
