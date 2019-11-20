@@ -1,6 +1,16 @@
 var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
+
+// CONNECTION POOL PG
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: process.env.PG_MAX_CLIENT,
+  idleTimeoutMillis: process.env.PG_IDLETIMEOUT_MILLIS,
+  connectionTimeoutMillis: process.env.PG_CONNECTIONTIMEOUT_MILLIS,
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -19,19 +29,17 @@ app.get('/', function(request, response) {
   });
 });
 
-const { Pool } = require('pg');
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true
-});
+
 
 
 app.post('/api/v1/InIStationProbe', async(req, res) => {
   console.info(req.body);
   try{     
           let istationarray= req.body;
-          const client = await pool.connect();
           try {
+              const client = await pool.connect();
+              consolo.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
+          
               for(let i = 0; i < istationarray.length;i++){
 
                   // INSERT VALIDATION RULES
@@ -63,7 +71,8 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
                   message: err.message
                 });
               } finally {
-                client.release();
+                client.release(true);
+                consolo.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
               } 
 
           return res.status(201).send({
@@ -90,6 +99,8 @@ app.get('/api/v1/InIStationProbe', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
+  }finally{
+    client.release(true);
   }
 });
 
@@ -105,7 +116,7 @@ app.get('/api/v1/InIStationProbe/count', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   }finally{
-    client.release();
+    client.release(true);
   }
 });
 
@@ -118,7 +129,7 @@ app.delete('/api/v1/InIStationProbe', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   } finally{
-    client.release();
+    client.release(true);
   }
   return res.status(201).send({
     success: 'true',
