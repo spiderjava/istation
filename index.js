@@ -36,14 +36,18 @@ app.get('/', function(request, response) {
 /* INSERT NEW RECORD INTO DATABASE*/
 /* ############################## */
 app.post('/api/v1/InIStationProbe', async(req, res) => {
-  console.info(req.body);
+  //console.info(req.body);
   try{     
           let istationarray= req.body;
+          if(!Array.isArray(istationarray)){
+            throw new Error('Expected an Array of IStationProbe');
+          }
           let client = null;
           try {
             client = await pool.connect()
             //console.info("Client Count: "+ pool.totalCount + " ---> Client Idle: "+pool.idleCount);
             await client.query('BEGIN');
+
               for(let i = 0; i < istationarray.length;i++){
 
                   // INSERT VALIDATION RULES
@@ -86,7 +90,7 @@ app.post('/api/v1/InIStationProbe', async(req, res) => {
         } catch (err) {
           return res.status(400).send({
             success: 'false',
-            message: err
+            message: err.message
           });
         }
           
